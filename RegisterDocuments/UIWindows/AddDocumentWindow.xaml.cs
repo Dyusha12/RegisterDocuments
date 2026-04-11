@@ -51,26 +51,7 @@ namespace RegisterDocuments
             string typeCode = DocumentTypeComboBox.SelectedValue?.ToString();
             string statusCode = StatusComboBox.SelectedValue?.ToString();
 
-            var errors = new List<string>();
-
-            // Проверка обязательного поля
-            if (string.IsNullOrWhiteSpace(name))
-                errors.Add("Название документа обязательно.");
-
-            if (string.IsNullOrWhiteSpace(typeCode))
-                errors.Add("Не выбран тип документа.");
-
-            if (string.IsNullOrWhiteSpace(statusCode))
-                errors.Add("Не выбран статус документа.");
-
-            if (!string.IsNullOrWhiteSpace(name))
-            {
-                if (name.Length < 3)
-                    errors.Add("Название документа должно содержать минимум 3 символа.");
-
-                if (name.Length > 200)
-                    errors.Add("Название документа не должно превышать 200 символов.");
-            }
+            var errors = DocumentValidationHelper.Validate(name, typeCode, statusCode);
 
             // Если есть ошибки, показываем их пользователю
             if (errors.Any())
