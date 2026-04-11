@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\RegisterDocuments\RegisterDocuments.csproj" />
     <ProjectReference Include="..\ServicesLibrary\ServicesLibrary.csproj" />
   </ItemGroup>
 

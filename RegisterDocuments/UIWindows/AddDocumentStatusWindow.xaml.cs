@@ -28,24 +28,7 @@ namespace RegisterDocuments
         {
             string statusName = StatusNameTextBox.Text?.Trim();
 
-            var errors = new List<string>();
-
-            // Проверка обязательного поля
-            if (string.IsNullOrWhiteSpace(statusName))
-                errors.Add("Название статуса обязательно.");
-
-            if (!string.IsNullOrWhiteSpace(statusName))
-            {
-                int letterCount = statusName.Count(char.IsLetter);
-                if (letterCount < 3)
-                    errors.Add("Название статуса документа должно содержать минимум 3 буквы.");
-
-                if (statusName.Length > 50)
-                    errors.Add("Название статуса не должно превышать 50 символов.");
-
-                if (!Regex.IsMatch(statusName, @"^[А-Яа-яA-Za-z\s-]+$"))
-                    errors.Add("Название статуса может содержать только буквы, пробелы и дефисы.");
-            }
+            var errors = StatusValidationHelper.Validate(statusName);
 
             // Если есть ошибки, показываем их пользователю
             if (errors.Any())
