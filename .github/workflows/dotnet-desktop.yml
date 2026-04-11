@@ -17,6 +17,8 @@ jobs:
 
     env:
       Solution_Name: RegisterDocuments.sln
+      LANG: ru_RU.UTF-8
+      LC_ALL: ru_RU.UTF-8
 
     steps:
     - name: Checkout

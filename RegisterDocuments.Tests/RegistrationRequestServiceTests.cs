@@ -1,21 +1,12 @@
 using ServicesLibrary.Modules;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
-using System.Globalization;
 
 namespace RegisterDocuments.Tests
 {
     [TestClass]
     public class RegistrationRequestServiceTests
     {
-        [TestInitialize]
-        public void Setup()
-        {
-            var culture = new CultureInfo("ru-RU");
-            Thread.CurrentThread.CurrentCulture = culture;
-            Thread.CurrentThread.CurrentUICulture = culture;
-        }
-
         private RegistrationRequestService CreateService()
         {
             return new RegistrationRequestService(null);
