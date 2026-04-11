@@ -1,6 +1,7 @@
 using ServicesLibrary.Modules;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
+using System.Globalization;
 
 namespace RegisterDocuments.Tests
 {
@@ -20,9 +21,9 @@ namespace RegisterDocuments.Tests
 
             var result = service.ValidateRequest(
                 "User123",
-                "Иванов",
-                "Иван",
-                "Иванович",
+                "Ivanov",
+                "Ivan",
+                "Ivanovich",
                 "Password1!",
                 "Password1!"
             );
@@ -35,10 +36,10 @@ namespace RegisterDocuments.Tests
         public void ValidateRequest_LoginTooShort_ReturnsError()
         {
             var result = CreateService().ValidateRequest(
-                "ab", "Иванов", "Иван", "Иванович", "Password1!", "Password1!"
+                "ab", "Ivanov", "Ivan", "Ivanovich", "Password1!", "Password1!"
             );
 
-            Assert.IsTrue(result.Any(e => e.Contains("минимум 3 символа")));
+            Assert.IsTrue(result.Any(e => e.Contains("at least 3 characters")));
         }
 
         // Логин с пробелами
@@ -46,10 +47,10 @@ namespace RegisterDocuments.Tests
         public void ValidateRequest_LoginWithSpaces_ReturnsError()
         {
             var result = CreateService().ValidateRequest(
-                "User 123", "Иванов", "Иван", "Иванович", "Password1!", "Password1!"
+                "User 123", "Ivanov", "Ivan", "Ivanovich", "Password1!", "Password1!"
             );
 
-            Assert.IsTrue(result.Any(e => e.Contains("пробелы")));
+            Assert.IsTrue(result.Any(e => e.Contains("must not contain spaces")));
         }
 
         // Логин без букв
@@ -57,10 +58,10 @@ namespace RegisterDocuments.Tests
         public void ValidateRequest_LoginNoLetters_ReturnsError()
         {
             var result = CreateService().ValidateRequest(
-                "123456", "Иванов", "Иван", "Иванович", "Password1!", "Password1!"
+                "123456", "Ivanov", "Ivan", "Ivanovich", "Password1!", "Password1!"
             );
 
-            Assert.IsTrue(result.Any(e => e.Contains("хотя бы одну букву")));
+            Assert.IsTrue(result.Any(e => e.Contains("at least one letter")));
         }
 
         // Пароль слишком короткий
@@ -68,10 +69,10 @@ namespace RegisterDocuments.Tests
         public void ValidateRequest_PasswordTooShort_ReturnsError()
         {
             var result = CreateService().ValidateRequest(
-                "User123", "Иванов", "Иван", "Иванович", "P1!", "P1!"
+                "User123", "Ivanov", "Ivan", "Ivanovich", "P1!", "P1!"
             );
 
-            Assert.IsTrue(result.Any(e => e.Contains("минимум 5 символов")));
+            Assert.IsTrue(result.Any(e => e.Contains("at least 5 characters")));
         }
 
         // Нет заглавной буквы
@@ -79,10 +80,10 @@ namespace RegisterDocuments.Tests
         public void ValidateRequest_PasswordNoUppercase_ReturnsError()
         {
             var result = CreateService().ValidateRequest(
-                "User123", "Иванов", "Иван", "Иванович", "password1!", "password1!"
+                "User123", "Ivanov", "Ivan", "Ivanovich", "password1!", "password1!"
             );
 
-            Assert.IsTrue(result.Any(e => e.Contains("заглавную букву")));
+            Assert.IsTrue(result.Any(e => e.Contains("uppercase letter")));
         }
 
         // Нет спецсимвола
@@ -90,10 +91,10 @@ namespace RegisterDocuments.Tests
         public void ValidateRequest_PasswordNoSpecialChar_ReturnsError()
         {
             var result = CreateService().ValidateRequest(
-                "User123", "Иванов", "Иван", "Иванович", "Password1", "Password1"
+                "User123", "Ivanov", "Ivan", "Ivanovich", "Password1", "Password1"
             );
 
-            Assert.IsTrue(result.Any(e => e.Contains("спецсимвол")));
+            Assert.IsTrue(result.Any(e => e.Contains("special character")));
         }
 
         // Пароли не совпадают
@@ -101,10 +102,10 @@ namespace RegisterDocuments.Tests
         public void ValidateRequest_PasswordMismatch_ReturnsError()
         {
             var result = CreateService().ValidateRequest(
-                "User123", "Иванов", "Иван", "Иванович", "Password1!", "Password2!"
+                "User123", "Ivanov", "Ivan", "Ivanovich", "Password1!", "Password2!"
             );
 
-            Assert.IsTrue(result.Contains("Пароли не совпадают."));
+            Assert.IsTrue(result.Contains("Passwords do not match."));
         }
 
         // Фамилия на латинице
@@ -112,10 +113,10 @@ namespace RegisterDocuments.Tests
         public void ValidateRequest_LastNameLatin_ReturnsError()
         {
             var result = CreateService().ValidateRequest(
-                "User123", "Ivanov", "Иван", "Иванович", "Password1!", "Password1!"
+                "User123", "Ivanov", "Ivan", "Ivanovich", "Password1!", "Password1!"
             );
 
-            Assert.IsTrue(result.Any(e => e.Contains("русские буквы")));
+            Assert.IsTrue(result.Any(e => e.Contains("only letters")));
         }
 
         // Имя пустое
@@ -123,10 +124,10 @@ namespace RegisterDocuments.Tests
         public void ValidateRequest_FirstNameEmpty_ReturnsError()
         {
             var result = CreateService().ValidateRequest(
-                "User123", "Иванов", "", "Иванович", "Password1!", "Password1!"
+                "User123", "Ivanov", "", "Ivanovich", "Password1!", "Password1!"
             );
 
-            Assert.IsTrue(result.Any(e => e.Contains("Имя обязательно")));
+            Assert.IsTrue(result.Any(e => e.Contains("First name is required")));
         }
 
         // Отчество необязательное
@@ -134,10 +135,10 @@ namespace RegisterDocuments.Tests
         public void ValidateRequest_MiddleNameOptional_NoError()
         {
             var result = CreateService().ValidateRequest(
-                "User123", "Иванов", "Иван", "", "Password1!", "Password1!"
+                "User123", "Ivanov", "Ivan", "", "Password1!", "Password1!"
             );
 
-            Assert.IsFalse(result.Any(e => e.Contains("Отчество")));
+            Assert.IsFalse(result.Any(e => e.Contains("Middle name")));
         }
 
         // Много ошибок

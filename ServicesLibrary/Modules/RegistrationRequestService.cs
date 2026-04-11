@@ -39,7 +39,7 @@ namespace ServicesLibrary.Modules
 
             // Проверка совпадения паролей
             if (password != confirmPassword)
-                errors.Add("Пароли не совпадают.");
+                errors.Add("Passwords do not match.");
 
             // Проверка фамилии
             var lastNameError = ValidateLastName(lastname);
@@ -60,24 +60,24 @@ namespace ServicesLibrary.Modules
         private string? ValidateLogin(string login)
         {
             if (string.IsNullOrWhiteSpace(login))
-                return "Логин обязателен.";
+                return "Login is required.";
 
             login = login.Trim();
 
             if (login.Contains(" "))
-                return "Логин не должен содержать пробелы.";
+                return "Login must not contain spaces.";
 
             if (login.Length < 3)
-                return "Логин должен содержать минимум 3 символа.";
+                return "Login must be at least 3 characters long.";
 
             if (login.Length > 15)
-                return "Логин не должен превышать 15 символов.";
+                return "Login must not exceed 15 characters.";
 
             if (!Regex.IsMatch(login, @"[A-Za-zА-Яа-я]"))
-                return "Логин должен содержать хотя бы одну букву.";
+                return "Login must contain at least one letter.";
 
             if (!Regex.IsMatch(login, @"^[A-Za-zА-Яа-я0-9-]+$"))
-                return "Логин может содержать только буквы, цифры и знак '-'.";
+                return "Login can contain only letters, digits, and '-'.";
 
             return null;
         }
@@ -86,26 +86,26 @@ namespace ServicesLibrary.Modules
         private string? ValidatePassword(string password)
         {
             if (string.IsNullOrWhiteSpace(password))
-                return "Пароль обязателен.";
+                return "Password is required.";
 
             password = password.Trim();
 
             if (password.Contains(" "))
-                return "Пароль не должен содержать пробелы.";
+                return "Password must not contain spaces.";
 
             if (password.Length < 5)
-                return "Пароль должен содержать минимум 5 символов.";
+                return "Password must be at least 5 characters long.";
 
             if (password.Length > 20)
-                return "Пароль должен содержать минимум 5 символов.";
+                return "Password must not exceed 20 characters.";
 
             if (!Regex.IsMatch(password, @"[A-ZА-Я]"))
-                return "Пароль должен содержать хотя бы одну заглавную букву.";
+                return "Password must contain at least one uppercase letter.";
 
             string specialChars = @"!+_/><$#&()=|{}№?*%";
 
             if (!Regex.IsMatch(password, "[" + Regex.Escape(specialChars) + "]"))
-                return $"Пароль должен содержать хотя бы один спецсимвол.";
+                return $"Password must contain at least one special character.";
 
             bool hasLetter = Regex.IsMatch(password, @"[A-Za-zА-Яа-я]");
             bool hasDigit = Regex.IsMatch(password, @"\d");
@@ -114,7 +114,7 @@ namespace ServicesLibrary.Modules
             int categories = (hasLetter ? 1 : 0) + (hasDigit ? 1 : 0) + (hasSpecial ? 1 : 0);
 
             if (categories < 2)
-                return "Пароль должен содержать минимум два типа символов.";
+                return "Password must contain at least two types of characters.";
 
             return null;
         }
@@ -123,21 +123,21 @@ namespace ServicesLibrary.Modules
         private string? ValidateLastName(string lastname)
         {
             if (string.IsNullOrWhiteSpace(lastname))
-                return "Фамилия обязательна.";
+                return "Last name is required.";
 
             lastname = lastname.Trim();
 
             if (lastname.Contains(" "))
-                return "Фамилия не должна содержать пробелы.";
+                return "Last name must not contain spaces.";
 
             if (lastname.Length < 2)
-                return "Фамилия должна содержать минимум 2 символа.";
+                return "Last name must be at least 2 characters long.";
 
             if (lastname.Length > 50)
-                return "Фамилия не должна превышать 50 символов.";
+                return "Last name must not exceed 50 characters.";
 
-            if (!Regex.IsMatch(lastname, @"^[А-Яа-я]+$"))
-                return "Фамилия может содержать только русские буквы, без символов.";
+            if (!Regex.IsMatch(lastname, @"^[A-Za-zА-Яа-я]+$"))
+                return "Last name can contain only letters.";
 
             return null;
         }
@@ -146,21 +146,21 @@ namespace ServicesLibrary.Modules
         private string? ValidateFirstName(string firstname)
         {
             if (string.IsNullOrWhiteSpace(firstname))
-                return "Имя обязательно.";
+                return "First name is required.";
 
             firstname = firstname.Trim();
 
             if (firstname.Contains(" "))
-                return "Имя не должно содержать пробелы.";
+                return "First name must not contain spaces.";
 
             if (firstname.Length < 2)
-                return "Имя должно содержать минимум 2 символа.";
+                return "First name must be at least 2 characters long.";
 
             if (firstname.Length > 50)
-                return "Имя не должно превышать 50 символов.";
+                return "First name must not exceed 50 characters.";
 
-            if (!Regex.IsMatch(firstname, @"^[А-Яа-я]+$"))
-                return "Имя может содержать только русские буквы, без символов.";
+            if (!Regex.IsMatch(firstname, @"^[A-Za-zА-Яа-я]+$"))
+                return "First name can contain only letters.";
 
             return null;
         }
@@ -174,16 +174,16 @@ namespace ServicesLibrary.Modules
             middlename = middlename.Trim();
 
             if (middlename.Contains(" "))
-                return "Отчество не должно содержать пробелы.";
+                return "Middle name must not contain spaces.";
 
             if (middlename.Length < 2)
-                return "Отчество должно содержать минимум 2 символа.";
+                return "Middle name must be at least 2 characters long.";
 
             if (middlename.Length > 50)
-                return "Отчество не должно превышать 50 символов.";
+                return "Middle name must not exceed 50 characters.";
 
-            if (!Regex.IsMatch(middlename, @"^[А-Яа-я]+$"))
-                return "Отчество может содержать только русские буквы, без символов.";
+            if (!Regex.IsMatch(middlename, @"^[A-Za-zА-Яа-я]+$"))
+                return "Middle name can contain only letters.";
 
             return null;
         }
