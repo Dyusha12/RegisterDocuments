@@ -1,0 +1,221 @@
+﻿<Window x:Class="RegisterDocuments.RegistrationRequestModerationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Заявки на регистрацию"
+        Background="#F4F6F8"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Width="990"
+        Height="610"
+        ShowInTaskbar="False">
+
+    <!-- Ресурсы окна -->
+    <Window.Resources>
+        <!-- Основной стиль кнопок -->
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+            <Setter Property="Background" Value="#1976D2"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Стиль для подписей полей -->
+        <Style x:Key="FieldLabelStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="#555"/>
+            <Setter Property="Margin" Value="0,0,0,4"/>
+        </Style>
+
+        <!-- Стиль для текстовых полей -->
+        <Style x:Key="InputStyle" TargetType="TextBox">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="6"/>
+        </Style>
+
+        <!-- Базовый стиль для кнопок-иконок -->
+        <Style x:Key="IconButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="26"/>
+            <Setter Property="Height" Value="26"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+        <!-- Кнопка Одобрить -->
+        <Style x:Key="ApproveIcon" TargetType="Button" BasedOn="{StaticResource IconButtonStyle}">
+            <Setter Property="Background" Value="#4CAF50"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <!-- Кнопка Отклонить -->
+        <Style x:Key="RejectIcon" TargetType="Button" BasedOn="{StaticResource IconButtonStyle}">
+            <Setter Property="Background" Value="#D32F2F"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+    </Window.Resources>
+
+    <!-- Основной контейнер -->
+    <Border Padding="24" Background="#F4F6F8" CornerRadius="10">
+        <Grid HorizontalAlignment="Stretch">
+            
+            <!-- Разметка строк -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="380"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Text="Заявки на регистрацию"
+                       FontSize="20" FontWeight="Bold"
+                       HorizontalAlignment="Center" Margin="0,0,0,18"/>
+
+            <!-- Панель поиска -->
+            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,12">
+                <TextBlock Text="Поиск:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <TextBox x:Name="SearchTextBox" Width="220" Style="{StaticResource InputStyle}" TextChanged="SearchTextBox_TextChanged"/>
+                <Button Content="Обновить" Width="110" Margin="20,0,0,0" Style="{StaticResource PrimaryButtonStyle}" Click="Refresh_Click"/>
+            </StackPanel>
+
+            <!-- Контейнер списка -->
+            <Border Grid.Row="2" Background="White" CornerRadius="10" Padding="10">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Grid.IsSharedSizeScope="True">
+                        
+                        <!-- Заголовки таблицы -->
+                        <Grid Grid.IsSharedSizeScope="True" Margin="0,0,0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition SharedSizeGroup="col0" Width="80"/>
+                                <ColumnDefinition SharedSizeGroup="col1" Width="150"/>
+                                <ColumnDefinition SharedSizeGroup="col2" Width="170"/>
+                                <ColumnDefinition SharedSizeGroup="col3" Width="170"/>
+                                <ColumnDefinition SharedSizeGroup="col4" Width="170"/>
+                                <ColumnDefinition SharedSizeGroup="col5" Width="165"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Названия колонок -->
+                            <Border Grid.Column="0" Background="#D3EFFF" CornerRadius="4" BorderBrush="Gray" BorderThickness="0,0,1,1" Padding="6" Height="40">
+                                <TextBlock Text="Действия" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                           
+                            <Border Grid.Column="1" Background="#D3EFFF" CornerRadius="4" BorderBrush="Gray" BorderThickness="0,0,1,1" Padding="6" Height="40">
+                                <TextBlock Text="Логин" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <Border Grid.Column="2" Background="#D3EFFF" CornerRadius="4" BorderBrush="Gray" BorderThickness="0,0,1,1" Padding="6" Height="40">
+                                <TextBlock Text="Фамилия" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <Border Grid.Column="3" Background="#D3EFFF" CornerRadius="4" BorderBrush="Gray" BorderThickness="0,0,1,1" Padding="6" Height="40">
+                                <TextBlock Text="Имя" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <Border Grid.Column="4" Background="#D3EFFF" CornerRadius="4" BorderBrush="Gray" BorderThickness="0,0,1,1" Padding="6" Height="40">
+                                <TextBlock Text="Отчество" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <Border Grid.Column="5" Background="#D3EFFF" CornerRadius="4" BorderBrush="Gray" BorderThickness="0,0,0,1" Padding="6" Height="40">
+                                <TextBlock Text="Дата" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </Grid>
+
+                        <!-- Список заявок -->
+                        <Grid>
+                            <ListBox x:Name="RequestsListBox" BorderThickness="0" Background="Transparent">
+
+                                <!-- Стиль элементов списка -->
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="ListBoxItem">
+                                        <Setter Property="Padding" Value="0"/>
+                                        <Setter Property="Margin" Value="0"/>
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                        <Setter Property="VerticalContentAlignment" Value="Top"/>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="ListBoxItem">
+                                                    <Border x:Name="Bd" BorderBrush="Gray" BorderThickness="0,0,0,1" Background="{TemplateBinding Background}">
+                                                        <ContentPresenter/>
+                                                    </Border>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsSelected" Value="True">
+                                                            <Setter TargetName="Bd" Property="Background" Value="#ADD8E6"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter TargetName="Bd" Property="Background" Value="#D3EFFF"/>
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+
+                                <!-- Шаблон строки -->
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border BorderBrush="Gray" BorderThickness="0,0,0,1">
+                                            <Grid Height="40">
+                                                
+                                                <!-- Колонки строки -->
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition SharedSizeGroup="col0" Width="80"/>
+                                                    <ColumnDefinition SharedSizeGroup="col1" Width="150"/>
+                                                    <ColumnDefinition SharedSizeGroup="col2" Width="170"/>
+                                                    <ColumnDefinition SharedSizeGroup="col3" Width="170"/>
+                                                    <ColumnDefinition SharedSizeGroup="col4" Width="170"/>
+                                                    <ColumnDefinition SharedSizeGroup="col5" Width="160"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <!-- Кнопки действий -->
+                                                <Border Grid.Column="0" BorderBrush="Gray" BorderThickness="0,0,1,0" Padding="4">
+                                                    <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                        <Button Content="✔" Style="{StaticResource ApproveIcon}" Click="Approve_Click"/>
+                                                        <Button Content="✖" Style="{StaticResource RejectIcon}" Click="Reject_Click"/>
+                                                    </StackPanel>
+                                                </Border>
+
+                                                <!-- Данные пользователя -->
+                                                <Border Grid.Column="1" BorderBrush="Gray" BorderThickness="0,0,1,0" Padding="4">
+                                                    <TextBlock Text="{Binding Login}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                                </Border>
+                                                <Border Grid.Column="2" BorderBrush="Gray" BorderThickness="0,0,1,0" Padding="4">
+                                                    <TextBlock Text="{Binding LastName}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                                </Border>
+                                                <Border Grid.Column="3" BorderBrush="Gray" BorderThickness="0,0,1,0" Padding="4">
+                                                    <TextBlock Text="{Binding Name}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                                </Border>
+                                                <Border Grid.Column="4" BorderBrush="Gray" BorderThickness="0,0,1,0" Padding="4">
+                                                    <TextBlock Text="{Binding MiddleName}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                                </Border>
+                                                <Border Grid.Column="5" BorderBrush="Gray" BorderThickness="0,0,0,0" Padding="4">
+                                                    <TextBlock Text="{Binding DateCreate, StringFormat={}{0:dd-MM-yyyy HH:mm}}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                                </Border>
+
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <TextBlock x:Name="EmptyTextBlock" Text="Нет новых заявок для проверки" FontSize="16" Foreground="Gray" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed" Margin="0,30,0,0"/>
+                        </Grid>
+                        
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+
+            <Button Grid.Row="3" Content="Закрыть" Width="120" HorizontalAlignment="Center" Margin="0,10,0,0" Style="{StaticResource PrimaryButtonStyle}" Click="ExitButton_Click"/>
+
+        </Grid>
+    </Border>
+</Window>
