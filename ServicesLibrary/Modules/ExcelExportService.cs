@@ -1,63 +1,50 @@
 ﻿using System.Collections.Generic;
-using Microsoft.Office.Interop.Excel;
-using System.Runtime.InteropServices;
+using ClosedXML.Excel;
 
 namespace ServicesLibrary.Modules
 {
     public class ExcelExportService
     {
+        // Экспортирует список данных в Excel-файл (.xlsx)
         public bool ExportChartDataToExcel(List<ChartItem> data, string title, string filePath)
         {
-            Application excelApp = null;
-            Workbook workbook = null;
-
             try
             {
-                excelApp = new Application();
-                workbook = excelApp.Workbooks.Add();  // Добавление новой книги
-                Worksheet worksheet = workbook.ActiveSheet; // Выбор активного листа
+                // Создание новой Excel-книг
+                using var workbook = new XLWorkbook();
 
-                // Записываем заголовок
-                worksheet.Cells[1, 1] = title;
+                // Добавление листа
+                var worksheet = workbook.Worksheets.Add("Statistics");
 
-                // Заголовки таблицы
-                worksheet.Cells[3, 1] = "Категория";
-                worksheet.Cells[3, 2] = "Количество";
+                // Запись заголовка в первую строку
+                worksheet.Cell(1, 1).Value = title;
+
+                // Запись заголовков таблицы
+                worksheet.Cell(3, 1).Value = "Категория";
+                worksheet.Cell(3, 2).Value = "Количество";
 
                 int row = 4;
 
-                // Заполнение строки данными
+                // Проходим по всем элементам и записываем их в Excel
                 foreach (var item in data)
                 {
-                    worksheet.Cells[row, 1] = item.Name;
-                    worksheet.Cells[row, 2] = item.Count;
+                    worksheet.Cell(row, 1).Value = item.Name;   // название категории
+                    worksheet.Cell(row, 2).Value = item.Count;  // значение/количество
                     row++;
                 }
 
-                // Автоматическая подгонка ширины колонок
-                worksheet.Columns.AutoFit();
+                // Автоширина колонок
+                worksheet.Columns().AdjustToContents();
 
-                try
-                {
-                    workbook.SaveAs(filePath);
-                    return true; // Успешно сохранено
-                }
-                catch (COMException)
-                {
-                    // Пользователь нажал "Нет" или файл занят
-                    workbook.Close(false); // Изменения не сохраняются
-                    return false;
-                }
+                // Сохранение файла по указанному пути
+                workbook.SaveAs(filePath);
+
+                return true; // экспорт выполнен успешно
             }
-            finally
+            catch
             {
-                // Освобождение COM-объектов, чтобы Excel не оставался в памяти
-                if (workbook != null) Marshal.ReleaseComObject(workbook);
-                if (excelApp != null)
-                {
-                    excelApp.Quit();
-                    Marshal.ReleaseComObject(excelApp);
-                }
+                // Произошла ошибка
+                return false;
             }
         }
     }
