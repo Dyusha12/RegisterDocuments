@@ -17,9 +17,7 @@ namespace RegisterDocuments.Tests
         [TestMethod]
         public void ValidateRequest_ValidData_ReturnsNoErrors()
         {
-            var service = CreateService();
-
-            var result = service.ValidateRequest(
+            var result = CreateService().ValidateRequest(
                 "User123",
                 "Ivanov",
                 "Ivan",
@@ -108,12 +106,12 @@ namespace RegisterDocuments.Tests
             Assert.IsTrue(result.Contains("Passwords do not match."));
         }
 
-        // Фамилия на латинице
+        // Фамилия содержит цифры
         [TestMethod]
-        public void ValidateRequest_LastNameLatin_ReturnsError()
+        public void ValidateRequest_LastNameInvalid_ReturnsError()
         {
             var result = CreateService().ValidateRequest(
-                "User123", "Ivanov", "Ivan", "Ivanovich", "Password1!", "Password1!"
+                "User123", "Ivanov123", "Ivan", "Ivanovich", "Password1!", "Password1!"
             );
 
             Assert.IsTrue(result.Any(e => e.Contains("only letters")));
