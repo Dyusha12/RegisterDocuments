@@ -41,7 +41,9 @@ jobs:
         Configuration: ${{ matrix.configuration }}
 
     - name: Publish
-      run: dotnet publish RegisterDocuments/RegisterDocuments.csproj -c ${{ matrix.configuration }} --no-build --output bin/${{ matrix.configuration }}/publish/
+      run: msbuild RegisterDocumentsApp.csproj /p:Configuration=${{ matrix.configuration }} /p:DeployOnBuild=true /p:PublishDir=bin/${{ matrix.configuration }}/publish/ /p:PublishProtocol=FileSystem /m
+      env:
+        Configuration: ${{ matrix.configuration }}
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
