@@ -49,5 +49,5 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: RegisterDocuments-${{ matrix.configuration }}
-        path: bin/${{ matrix.configuration }}/publish/
+        path: RegisterDocuments/bin/${{ matrix.configuration }}/publish/
         if-no-files-found: error
