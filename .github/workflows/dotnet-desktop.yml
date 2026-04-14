@@ -41,13 +41,13 @@ jobs:
         Configuration: ${{ matrix.configuration }}
 
     - name: Publish
-        run: msbuild $env:Solution_Name /p:Configuration=${{ matrix.configuration }} /p:DeployOnBuild=true /p:PublishProfile=FolderProfile /p:PublishDir=bin/${{ matrix.configuration }}/publish/ /m
-        env:
-          Configuration: ${{ matrix.configuration }}
+      run: msbuild $env:Solution_Name /p:Configuration=${{ matrix.configuration }} /p:DeployOnBuild=true /p:PublishProfile=FolderProfile /p:PublishDir=bin/${{ matrix.configuration }}/publish/ /m
+      env:
+        Configuration: ${{ matrix.configuration }}
 
     - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: RegisterDocuments-${{ matrix.configuration }}
-          path: bin/${{ matrix.configuration }}/publish/
-          if-no-files-found: error
+      uses: actions/upload-artifact@v4
+      with:
+        name: RegisterDocuments-${{ matrix.configuration }}
+        path: bin/${{ matrix.configuration }}/publish/
+        if-no-files-found: error
