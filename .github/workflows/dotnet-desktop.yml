@@ -41,7 +41,7 @@ jobs:
         Configuration: ${{ matrix.configuration }}
 
     - name: Publish
-      run: msbuild $env:Solution_Name /p:Configuration=${{ matrix.configuration }} /p:DeployOnBuild=true /p:PublishProfile=FolderProfile /p:PublishDir=bin/${{ matrix.configuration }}/publish/ /m
+      run: dotnet publish $env:Solution_Name -c ${{ matrix.configuration }} --no-build --output bin/${{ matrix.configuration }}/publish/
       env:
         Configuration: ${{ matrix.configuration }}
 
