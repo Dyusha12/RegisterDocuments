@@ -41,7 +41,7 @@ jobs:
         Configuration: ${{ matrix.configuration }}
 
     - name: Publish
-      run: msbuild RegisterDocuments/RegisterDocuments.csproj /t:Publish /p:Configuration=${{ matrix.configuration }} /p:PublishDir=bin/${{ matrix.configuration }}/publish/ /p:PublishProtocol=FileSystem /p:RuntimeIdentifier=win-x64 /p:PublishSingleFile=true /p:SelfContained=false /m
+      run: msbuild RegisterDocuments/RegisterDocuments.csproj /t:Publish /p:Configuration=${{ matrix.configuration }} /p:PublishDir=bin/${{ matrix.configuration }}/publish/ /p:PublishProtocol=FileSystem /p:RuntimeIdentifier=win-x64 /p:PublishSingleFile=false /p:SelfContained=false /m
       env:
         Configuration: ${{ matrix.configuration }}
 
