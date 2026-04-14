@@ -41,7 +41,7 @@ jobs:
         Configuration: ${{ matrix.configuration }}
 
     - name: Publish
-      run: msbuild RegisterDocumentsApp.csproj /p:Configuration=${{ matrix.configuration }} /p:DeployOnBuild=true /p:PublishDir=bin/${{ matrix.configuration }}/publish/ /p:PublishProtocol=FileSystem /m
+      run: msbuild RegisterDocuments/RegisterDocuments.csproj /p:Configuration=${{ matrix.configuration }} /p:DeployOnBuild=true /p:PublishDir=bin/${{ matrix.configuration }}/publish/ /p:PublishProtocol=FileSystem /m
       env:
         Configuration: ${{ matrix.configuration }}
 
