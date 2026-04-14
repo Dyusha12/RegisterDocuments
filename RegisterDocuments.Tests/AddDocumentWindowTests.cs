@@ -11,7 +11,7 @@ namespace RegisterDocuments.Tests
         [TestMethod]
         public void Validate_EmptyName_ReturnsError()
         {
-            var result = DocumentValidationHelper.Validate("", "1", "1");
+            var result = DocumentValidationHelper.Validate("", "Contract", "In progress");
 
             Assert.IsTrue(result.Any(e => e.Contains("required")));
         }
@@ -20,7 +20,7 @@ namespace RegisterDocuments.Tests
         [TestMethod]
         public void Validate_NullName_ReturnsError()
         {
-            var result = DocumentValidationHelper.Validate(null, "1", "1");
+            var result = DocumentValidationHelper.Validate(null, "Contract", "In progress");
 
             Assert.IsTrue(result.Any(e => e.Contains("required")));
         }
@@ -29,7 +29,7 @@ namespace RegisterDocuments.Tests
         [TestMethod]
         public void Validate_MissingType_ReturnsError()
         {
-            var result = DocumentValidationHelper.Validate("Document", "", "1");
+            var result = DocumentValidationHelper.Validate("Document", "", "In progress");
 
             Assert.IsTrue(result.Any(e => e.Contains("type")));
         }
@@ -38,7 +38,7 @@ namespace RegisterDocuments.Tests
         [TestMethod]
         public void Validate_MissingStatus_ReturnsError()
         {
-            var result = DocumentValidationHelper.Validate("Document", "1", "");
+            var result = DocumentValidationHelper.Validate("Document", "Contract", "");
 
             Assert.IsTrue(result.Any(e => e.Contains("status")));
         }
@@ -47,7 +47,7 @@ namespace RegisterDocuments.Tests
         [TestMethod]
         public void Validate_NameTooShort_ReturnsError()
         {
-            var result = DocumentValidationHelper.Validate("ab", "1", "1");
+            var result = DocumentValidationHelper.Validate("ab", "Contract", "In progress");
 
             Assert.IsTrue(result.Any(e => e.Contains("at least 3")));
         }
@@ -58,7 +58,7 @@ namespace RegisterDocuments.Tests
         {
             var longName = new string('A', 250);
 
-            var result = DocumentValidationHelper.Validate(longName, "1", "1");
+            var result = DocumentValidationHelper.Validate(longName, "Contract", "In progress");
 
             Assert.IsTrue(result.Any(e => e.Contains("200")));
         }
@@ -67,7 +67,7 @@ namespace RegisterDocuments.Tests
         [TestMethod]
         public void Validate_ValidData_ReturnsNoErrors()
         {
-            var result = DocumentValidationHelper.Validate("Valid Document", "1", "1");
+            var result = DocumentValidationHelper.Validate("Valid Document", "Contract", "In progress");
 
             Assert.AreEqual(0, result.Count);
         }
@@ -76,7 +76,7 @@ namespace RegisterDocuments.Tests
         [TestMethod]
         public void Validate_MinLengthBoundary_ReturnsNoErrors()
         {
-            var result = DocumentValidationHelper.Validate("Doc", "1", "1");
+            var result = DocumentValidationHelper.Validate("Doc", "Contract", "In progress");
 
             Assert.AreEqual(0, result.Count);
         }
@@ -87,7 +87,7 @@ namespace RegisterDocuments.Tests
         {
             var name = new string('A', 200);
 
-            var result = DocumentValidationHelper.Validate(name, "1", "1");
+            var result = DocumentValidationHelper.Validate(name, "Contract", "In progress");
 
             Assert.AreEqual(0, result.Count);
         }

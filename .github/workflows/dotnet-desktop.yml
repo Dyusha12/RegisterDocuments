@@ -39,3 +39,15 @@ jobs:
       run: dotnet test $env:Solution_Name --configuration $env:Configuration --no-build --logger trx
       env:
         Configuration: ${{ matrix.configuration }}
+
+    - name: Publish
+        run: msbuild $env:Solution_Name /p:Configuration=${{ matrix.configuration }} /p:DeployOnBuild=true /p:PublishProfile=FolderProfile /p:PublishDir=bin/${{ matrix.configuration }}/publish/ /m
+        env:
+          Configuration: ${{ matrix.configuration }}
+
+    - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: RegisterDocuments-${{ matrix.configuration }}
+          path: bin/${{ matrix.configuration }}/publish/
+          if-no-files-found: error
